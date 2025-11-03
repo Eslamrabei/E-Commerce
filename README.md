@@ -81,16 +81,18 @@ ECommerceApp/
 └── Common/ # Common helpers and constants
 ```
 
----
-
 ## 📸 Screenshots
 
-| Description | Image |
-|--------------|-------|
- ![Swagger Screenshot](E-CommerceApi/wwwroot/assets/auth.png) | ![Swagger Screenshot](E-CommerceApi/wwwroot/assets/basket&orders.png) | ![Swagger Screenshot](E-CommerceApi/wwwroot/assets/products&payments.png) |
-| Redis Caching in Action | ![Redis Screenshot](E-CommerceApi/wwwroot/assets/redis.png) |
+### 🔹 API Endpoints & Features
+| Authentication | Basket & Orders | Products & Payments |
+|----------------|----------------|---------------------|
+| ![Authentication](E-CommerceApi/wwwroot/assets/auth.png) | ![Basket & Orders](E-CommerceApi/wwwroot/assets/basket&orders.png) | ![Products & Payments](E-CommerceApi/wwwroot/assets/products&payments.png) |
 
----
+### 🔹 Redis Caching in Action
+| Caching Example |
+|-----------------|
+| ![Redis Caching](E-CommerceApi/wwwroot/assets/redis.png) |
+
 
 ## ⚙️ Setup & Run Locally
 
