@@ -1,0 +1,146 @@
+# Node / Frontend
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# .NET / Backend
+bin/
+obj/
+appsettings.Development.json
+appsettings.json
+secrets.json
+
+# Editor / OS
+.vscode/
+*.log
+.DS_Store
+.vs/
+
+# ============================================
+# 🌐 ASP.NET Core + Angular Combined .gitignore
+# ============================================
+
+# --- 🔹 General ---
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.user
+*.sln.docstates
+*.suo
+*.userosscache
+*.userprefs
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# --- 🔹 Visual Studio ---
+.vs/
+.vscode/
+*.dbmdl
+*.dbproj.schemaview
+*.pdb
+*.opendb
+*.vshost.*
+*.vsp
+*.ncb
+*.aps
+*.psess
+*.vspx
+*.pidb
+*.svclog
+*.scc
+*.ilk
+*_i.c
+*_p.c
+*_h.h
+*.iobj
+*.ipdb
+
+# --- 🔹 Build Folders ---
+bin/
+obj/
+[Bb]uild/
+[Ll]ogs/
+[Ll]og/
+TestResults/
+PublishProfiles/
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+*.publishsettings
+*.nupkg
+*.snupkg
+
+# --- 🔹 ASP.NET Secrets & Configs ---
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+secrets.json
+*.Key
+*.pem
+*.cer
+*.pfx
+*.env
+
+# --- 🔹 Environment / User Secrets ---
+.env
+.env.*
+*.secret
+*.key
+*.token
+
+# --- 🔹 Frontend (Angular) ---
+node_modules/
+dist/
+build/
+out-tsc/
+coverage/
+.angular/
+.angular/cache/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+.pnp.*
+.pnpm-debug.log
+.idea/
+*.tsbuildinfo
+
+# --- 🔹 IDE-specific ---
+*.code-workspace
+*.iml
+*.sublime-workspace
+*.sublime-project
+*.idea/
+*.project
+*.classpath
+*.settings/
+*.history/
+
+# --- 🔹 OS generated files ---
+ehthumbs.db
+Icon?
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- 🔹 Temporary files ---
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+
+# --- 🔹 Misc ---
+wwwroot/lib/
+wwwroot/dist/
+wwwroot/node_modules/
+
+
