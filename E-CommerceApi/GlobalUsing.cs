@@ -1,0 +1,17 @@
+﻿global using Domain.Contracts;
+global using Domain.Entities.IdentityModule;
+global using E_CommerceApi.Factories;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.IdentityModel.Tokens;
+global using Persistence.Data;
+global using Persistence.Identity;
+global using Persistence.Repositories;
+global using Service;
+global using Service.Implementations;
+global using ServiceAbstraction.Contracts;
+global using Shared.Common;
+global using StackExchange.Redis;
+global using System.Text;

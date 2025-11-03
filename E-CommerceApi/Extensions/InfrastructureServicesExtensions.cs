@@ -1,17 +1,4 @@
-﻿using Domain.Contracts;
-using Domain.Entities.IdentityModule;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Persistence.Data;
-using Persistence.Identity;
-using Persistence.Repositories;
-using Shared.Common;
-using StackExchange.Redis;
-using System.Text;
-
-namespace E_CommerceApi.Extensions
+﻿namespace E_CommerceApi.Extensions
 {
     public static class InfrastructureServicesExtensions
     {
@@ -48,10 +35,8 @@ namespace E_CommerceApi.Extensions
 
         public static IServiceCollection ValidateJwt(this IServiceCollection services, IConfiguration _configuration)
         {
-            // 1] resolve the JwtOptions
             var jwtOptions = _configuration.GetSection("JwtOptions").Get<JwtOptions>();
 
-            // 2] Validate with AddAuthentication 
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,18 +44,18 @@ namespace E_CommerceApi.Extensions
             })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = true,
+                    ValidAudience = jwtOptions.Audience,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
                 };
             });
-
             services.AddAuthorization();
             return services;
 

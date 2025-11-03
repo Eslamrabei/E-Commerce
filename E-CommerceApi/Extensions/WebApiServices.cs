@@ -2,7 +2,7 @@
 
 namespace E_CommerceApi.Extensions
 {
-    public static class WebApplicationExtensions
+    public static class WebApiServices
     {
         public static IServiceCollection AddWebApiService(this IServiceCollection services, IConfiguration _configuration)
         {

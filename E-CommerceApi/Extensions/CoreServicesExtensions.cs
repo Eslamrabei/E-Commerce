@@ -1,11 +1,4 @@
-﻿using E_CommerceApi.Factories;
-using Microsoft.AspNetCore.Mvc;
-using Service;
-using Service.Implementations;
-using ServiceAbstraction.Contracts;
-using Shared.Common;
-
-namespace E_CommerceApi.Extensions
+﻿namespace E_CommerceApi.Extensions
 {
     public static class CoreServicesExtensions
     {
@@ -32,9 +25,6 @@ namespace E_CommerceApi.Extensions
             services.AddScoped<Func<IOrderService>>(provider => () => provider.GetRequiredService<IOrderService>());
             services.AddScoped<Func<IPaymentService>>(provider => () => provider.GetRequiredService<IPaymentService>());
             services.AddScoped<Func<ICacheService>>(provider => () => provider.GetRequiredService<ICacheService>());
-
-            // Mapping JwtOptions class <> JwtOptions appsettings.json
-            services.Configure<JwtOptions>(_configuration.GetSection("JwtOptions"));
 
             return services;
         }

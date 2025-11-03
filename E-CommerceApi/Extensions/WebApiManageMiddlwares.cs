@@ -1,8 +1,6 @@
-﻿using Domain.Contracts;
-
-namespace E_CommerceApi.Extensions
+﻿namespace E_CommerceApi.Extensions
 {
-    public static class WebApiServicesExtensions
+    public static class WebApiManageMiddlwares
     {
         public static IApplicationBuilder UseSwaggerMiddlewares(this WebApplication app)
         {

@@ -1,4 +1,5 @@
-﻿namespace Service.Implementations
+﻿using Address = Domain.Entities.IdentityModule.Address;
+namespace Service.Implementations
 {
     public class AuthenticationService(UserManager<User> _userManager, IOptions<JwtOptions> _options, IMapper _mapper) : IAuthenticationService
     {
@@ -51,10 +52,7 @@
 
         public async Task<UserResultDto> LoginAsync(LoginDto loginDto)
         {
-            // check if the email is exist 
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null) throw new UnauthorizeException();
-            // if user exist => check the password 
+            var user = await _userManager.FindByEmailAsync(loginDto.Email) ?? throw new UnauthorizeException();
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
             if (!result) throw new UnauthorizeException();
             return new UserResultDto(user.DisplayName, await GeneratJwtTokenAsync(user), loginDto.Email);
@@ -78,29 +76,24 @@
             }
             return new UserResultDto(user.DisplayName, await GeneratJwtTokenAsync(user), registerDto.Password);
         }
+
         private async Task<string> GeneratJwtTokenAsync(User user)
         {
             var jwtOptions = _options.Value;
-            // 1] Create List of Claims 
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Name , user.DisplayName),
                 new(ClaimTypes.Email , user.Email),
             };
-            //Roles 
+
             var roles = await _userManager.GetRolesAsync(user);
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-
-            // 2] Key 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
 
-
-            // 3] SignInCredientials => {Algorithm + key}
             var SignInCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            // 4] create toke
             var token = new JwtSecurityToken(
                 issuer: jwtOptions.Issuer,
                 audience: jwtOptions.Audience,
