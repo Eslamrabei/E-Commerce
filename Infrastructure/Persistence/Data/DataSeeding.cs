@@ -19,8 +19,9 @@
                     var ReadFile = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeed\brands.json");
                     var GetBrands = JsonSerializer.Deserialize<List<ProductBrand>>(ReadFile);
                     if (GetBrands.Any())
-                        await _dbContext.AddRangeAsync(GetBrands);
+                        await _dbContext.productBrands.AddRangeAsync(GetBrands);
                 }
+                await _dbContext.SaveChangesAsync();
                 #endregion
                 #region ProductTypes
                 if (!_dbContext.ProductTypes.Any())
@@ -28,8 +29,9 @@
                     var ReadFile = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeed\types.json");
                     var GetTypes = JsonSerializer.Deserialize<List<ProductType>>(ReadFile);
                     if (GetTypes.Any())
-                        await _dbContext.AddRangeAsync(GetTypes);
+                        await _dbContext.ProductTypes.AddRangeAsync(GetTypes);
                 }
+                await _dbContext.SaveChangesAsync();
                 #endregion
                 #region Products
                 if (!_dbContext.Products.Any())
@@ -37,7 +39,7 @@
                     var ReadFile = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeed\products.json");
                     var GetProducts = JsonSerializer.Deserialize<List<Product>>(ReadFile);
                     if (GetProducts.Any())
-                        await _dbContext.AddRangeAsync(GetProducts);
+                        await _dbContext.Products.AddRangeAsync(GetProducts);
                 }
                 #endregion
                 #region Deliver
