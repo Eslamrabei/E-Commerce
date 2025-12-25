@@ -30,4 +30,5 @@ namespace Domain.Entities.OrderModule
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
         public string PaymentIntentId { get; set; } = string.Empty;
     }
+
 }

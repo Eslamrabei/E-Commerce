@@ -27,6 +27,12 @@
         public int Skip { get; private set; }
         public bool IsPaginated { get; set; }
 
+        public bool IsSplitQuery { get; private set; }
+        protected void ApplySplitQuery()
+        {
+            IsSplitQuery = true;
+        }
+
         public void ApplyPagination(int PageSize, int PageIndex)
         {
             Take = PageSize;

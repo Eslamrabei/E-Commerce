@@ -3,16 +3,10 @@ using Shared.ErrorDetails;
 
 namespace E_CommerceApi.Middlewares
 {
-    public class GlobalExceptionHandelingMiddleware
+    public class GlobalExceptionHandelingMiddleware(RequestDelegate next, ILogger<GlobalExceptionHandelingMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<GlobalExceptionHandelingMiddleware> _logger;
-
-        public GlobalExceptionHandelingMiddleware(RequestDelegate next, ILogger<GlobalExceptionHandelingMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<GlobalExceptionHandelingMiddleware> _logger = logger;
 
         public async Task InvokeAsync(HttpContext context)
         {

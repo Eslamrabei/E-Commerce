@@ -2,7 +2,7 @@
 {
     public interface ISpecification<TEntity, Tkey> where TEntity : BaseEntity<Tkey>
     {
-
+        public bool IsSplitQuery { get; }
         Expression<Func<TEntity, bool>>? Criteria { get; }
         List<Expression<Func<TEntity, object>>> IncludeExpression { get; }
 

@@ -12,6 +12,12 @@
             {
                 options.UseSqlServer(_configuration.GetConnectionString("IdentityConnection"));
             });
+            services.AddSingleton<IConnectionMultiplexer>((_) =>
+            {
+                return ConnectionMultiplexer.Connect(_configuration.GetConnectionString("RedisConnection")!);
+            });
+
+
             // StoreDbContext
             services.AddScoped<IDataSeeding, DataSeeding>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -22,14 +28,14 @@
                 opt.User.RequireUniqueEmail = true;
 
             }).AddEntityFrameworkStores<IdentityStoreDbContext>();
-            services.AddSingleton<IConnectionMultiplexer>((_) =>
-            {
-                return ConnectionMultiplexer.Connect(_configuration.GetConnectionString("RedisConnection")!);
-            });
 
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<ICacheRepository, CacheRepository>();
+            //
+            services.Configure<JwtOptions>(_configuration.GetSection("JwtOptions"));
+
             services.ValidateJwt(_configuration);
+
             return services;
         }
 
@@ -57,6 +63,7 @@
                 };
             });
             services.AddAuthorization();
+
             return services;
 
         }

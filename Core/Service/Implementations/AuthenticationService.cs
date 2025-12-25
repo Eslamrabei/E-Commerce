@@ -11,21 +11,21 @@ namespace Service.Implementations
 
         public async Task<UserResultDto> GetCurrentUSerAsync(string userEmail)
         {
-            var user = await _userManager.FindByEmailAsync(userEmail) ?? throw new GenericNotFoundException<User, int>(userEmail);
+            var user = await _userManager.FindByEmailAsync(userEmail) ?? throw new GenericNotFoundException<User, int>(userEmail, "userEmail");
             return new UserResultDto(user.DisplayName, await GeneratJwtTokenAsync(user), userEmail);
         }
 
         public async Task<AddressDto> GetUserAddressAsync(string userEmail)
         {
             var user = await _userManager.Users.Include(add => add.Address).FirstOrDefaultAsync(user => user.Email == userEmail)
-                ?? throw new GenericNotFoundException<User, int>(userEmail);
+                ?? throw new GenericNotFoundException<User, int>(userEmail, "userEmail");
             return _mapper.Map<AddressDto>(user.Address);
         }
 
         public async Task<AddressDto> UpdateUserAddressAsync(AddressDto addressDto, string useremail)
         {
             var user = await _userManager.Users.Include(add => add.Address).FirstOrDefaultAsync(user => user.Email == useremail)
-               ?? throw new GenericNotFoundException<User, int>(useremail);
+               ?? throw new GenericNotFoundException<User, int>(useremail, "userEmail");
 
 
             if (user.Address != null)

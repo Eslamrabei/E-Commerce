@@ -6,7 +6,7 @@
         {
             var basket = _mapper.Map<CustomerBasket>(basketDto);
             var result = await _basket.CreateOrUpdateAsync(basket);
-            return result is null ? throw new GenericNotFoundException<CustomerBasket, int>(basket.Id) : await GetBasketAsync(basket.Id);
+            return result is null ? throw new GenericNotFoundException<CustomerBasket, int>(basket.Id, "BasketId") : await GetBasketAsync(basket.Id);
         }
 
         public async Task<bool> DeleteBasketAsync(string id)
@@ -14,7 +14,7 @@
         public async Task<BasketDto?> GetBasketAsync(string id)
         {
             var CustomerResult = await _basket.GetBasketAsync(id);
-            return CustomerResult is null ? throw new GenericNotFoundException<CustomerBasket, int>(id) : _mapper.Map<BasketDto>(CustomerResult);
+            return CustomerResult is null ? throw new GenericNotFoundException<CustomerBasket, int>(id, "BasketId") : _mapper.Map<BasketDto>(CustomerResult);
         }
     }
 }

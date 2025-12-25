@@ -16,7 +16,7 @@ namespace Presentation.Controllers
             => Ok(await _serviceManager.BasketService.CreateOrUpdateAsync(customerBasket));
 
         // 3] DeleteAsync
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<bool>> DeleteAsync(string id)
             => Ok(await _serviceManager.BasketService.DeleteBasketAsync(id));
 

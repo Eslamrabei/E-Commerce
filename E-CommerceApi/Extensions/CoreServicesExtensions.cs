@@ -26,6 +26,7 @@
             services.AddScoped<Func<IPaymentService>>(provider => () => provider.GetRequiredService<IPaymentService>());
             services.AddScoped<Func<ICacheService>>(provider => () => provider.GetRequiredService<ICacheService>());
 
+
             return services;
         }
     }
