@@ -7,6 +7,7 @@
         {
             AddInclude(dm => dm.DeliveryMethod);
             AddInclude(oi => oi.OrderItems);
+            ApplySplitQuery();
         }
 
         public OrderWithIncludesSpecifications(string userEmail)
@@ -15,7 +16,7 @@
             AddInclude(dm => dm.DeliveryMethod);
             AddInclude(ue => ue.OrderItems);
             AddOrderBy(o => o.OrderDate);
-
+            ApplySplitQuery();
         }
 
     }

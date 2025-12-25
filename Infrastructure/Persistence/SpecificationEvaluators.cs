@@ -21,6 +21,11 @@
             if (specification.IncludeExpression != null)
                 query = specification.IncludeExpression.Aggregate(query, (current, include) => current.Include(include));
 
+            if (specification.IsSplitQuery)
+            {
+                query = query.AsSplitQuery();
+            }
+
             return query;
         }
     }

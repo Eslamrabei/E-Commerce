@@ -27,7 +27,7 @@
             var repo = _unitOfWork.GetRepository<Product, int>();
             var ProductSpecification = new ProductTypeAndBrandSpecifications(Id);
             var ProductById = await repo.GetByIdAsync(ProductSpecification);
-            return ProductById == null ? throw new GenericNotFoundException<Product, int>(Id) : _mapper.Map<ProductsResultDto>(ProductById);
+            return ProductById == null ? throw new GenericNotFoundException<Product, int>(Id, "Id") : _mapper.Map<ProductsResultDto>(ProductById);
         }
 
         public async Task<IEnumerable<TypeResultDto>> GetAllTypesAsync()

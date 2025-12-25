@@ -1,5 +1,4 @@
-﻿using Domain.Entities.OrderModule;
-using Address = Domain.Entities.OrderModule.Address;
+﻿using Address = Domain.Entities.OrderModule.Address;
 namespace Service.Implementations
 {
     public class OrderService(IMapper _mapper, IBasketRepository _basketRepository, IUnitOfWork _unitOfWork) : IOrderService
@@ -9,19 +8,19 @@ namespace Service.Implementations
             var address = _mapper.Map<Address>(order.ShipToAddress);
 
             var basket = await _basketRepository.GetBasketAsync(order.BasketId)
-                ?? throw new GenericNotFoundException<CustomerBasket, int>(order.BasketId);
+                ?? throw new GenericNotFoundException<CustomerBasket, int>(order.BasketId, "BasketId");
             var orderItems = new List<OrderItem>();
             foreach (var item in basket.Items)
             {
                 var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(item.Id)
-                ?? throw new GenericNotFoundException<Product, int>(item.Id);
+                ?? throw new GenericNotFoundException<Product, int>(item.Id, "BasketId");
                 orderItems.Add(CreateOrderProductItem(product, item));
             }
 
             var orderRepo = _unitOfWork.GetRepository<Order, Guid>();
 
             var deliveryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>()
-                .GetByIdAsync(order.DeliveryMethodId) ?? throw new GenericNotFoundException<DeliveryMethod, int>(order.DeliveryMethodId);
+                .GetByIdAsync(order.DeliveryMethodId) ?? throw new GenericNotFoundException<DeliveryMethod, int>(order.DeliveryMethodId, "DeliveryMethodId");
 
             var orderExist = await orderRepo.GetByIdAsync(new OrderWithPaymentInetntIdSpecifications(basket.PaymentIndentId));
             if (orderExist != null)
@@ -52,7 +51,7 @@ namespace Service.Implementations
 
         public async Task<IEnumerable<OrderResultDto>> GetAllOrdersByEmailAsync(string userEmail)
         {
-            var orderSpecifications = new OrderWithIncludesSpecifications(userEmail) ?? throw new GenericNotFoundException<Order, Guid>($"The use with an email: {userEmail} not found");
+            var orderSpecifications = new OrderWithIncludesSpecifications(userEmail) ?? throw new GenericNotFoundException<Order, Guid>(userEmail, "userEmail");
             var orderResult = await _unitOfWork.GetRepository<Order, Guid>().GetAllAsync(orderSpecifications);
             return _mapper.Map<IEnumerable<OrderResultDto>>(orderResult);
 
@@ -61,7 +60,7 @@ namespace Service.Implementations
 
         public async Task<OrderResultDto> GetOrderByIdAsync(Guid id)
         {
-            var orderSpecifications = new OrderWithIncludesSpecifications(id) ?? throw new GenericNotFoundException<Order, Guid>(id);
+            var orderSpecifications = new OrderWithIncludesSpecifications(id) ?? throw new GenericNotFoundException<Order, Guid>(id, "Id");
             var ordreResult = await _unitOfWork.GetRepository<Order, Guid>().GetByIdAsync(orderSpecifications);
             return _mapper.Map<OrderResultDto>(ordreResult);
         }

@@ -57,19 +57,19 @@ namespace Service.Implementations
             foreach (var item in basket.Items)
             {
                 var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(item.Id)
-                    ?? throw new GenericNotFoundException<Product, int>(item.Id);
+                    ?? throw new GenericNotFoundException<Product, int>(item.Id, "Id");
                 item.Price = product.Price;
             }
 
-            if (!basket.DeliveryMethodId.HasValue) throw new GenericNotFoundException<DeliveryMethod, int>(basket.DeliveryMethodId);
+            if (!basket.DeliveryMethodId.HasValue) throw new GenericNotFoundException<DeliveryMethod, int>(basket.DeliveryMethodId, "DeliveryMethodId");
             var deliveryMethod = await _unitOfWork.GetRepository<DeliveryMethod, int>()
-                .GetByIdAsync(basket.DeliveryMethodId.Value) ?? throw new GenericNotFoundException<DeliveryMethod, int>(basket.DeliveryMethodId.Value);
+                .GetByIdAsync(basket.DeliveryMethodId.Value) ?? throw new GenericNotFoundException<DeliveryMethod, int>(basket.DeliveryMethodId.Value, "DeliveryMethodId");
             basket.ShippingPrice = deliveryMethod.Price;
         }
 
         private async Task<CustomerBasket> GetBasket(string basketId)
         {
-            return await _basketRepository.GetBasketAsync(basketId) ?? throw new GenericNotFoundException<CustomerBasket, int>(basketId);
+            return await _basketRepository.GetBasketAsync(basketId) ?? throw new GenericNotFoundException<CustomerBasket, int>(basketId, "basketId");
         }
 
         public async Task UpdatePaymentsStatusAsync(string json, string signatureHeader)
