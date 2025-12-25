@@ -27,13 +27,18 @@
             {
                 opt.User.RequireUniqueEmail = true;
 
-            }).AddEntityFrameworkStores<IdentityStoreDbContext>();
+            }).AddEntityFrameworkStores<IdentityStoreDbContext>()
+            .AddDefaultTokenProviders();
+            services.AddSingleton<IConnectionMultiplexer>((_) =>
+            {
+                return ConnectionMultiplexer.Connect(_configuration.GetConnectionString("RedisConnection")!);
+            });
 
+            services.AddScoped<JwtOptions>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<ICacheRepository, CacheRepository>();
-            //
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.Configure<JwtOptions>(_configuration.GetSection("JwtOptions"));
-
             services.ValidateJwt(_configuration);
 
             return services;
@@ -57,7 +62,7 @@
                     ValidIssuer = jwtOptions.Issuer,
                     ValidateAudience = true,
                     ValidAudience = jwtOptions.Audience,
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
                 };

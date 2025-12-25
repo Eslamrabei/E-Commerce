@@ -98,6 +98,6 @@ ECommerceApp/
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/ECommerceApp.git
+git clone https://github.com/Eslamrabei/E-Commerce.git
 cd ECommerceApp
 

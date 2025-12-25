@@ -51,8 +51,16 @@ namespace Presentation.Controllers
             var addressResult = await _serviceManager.AuthenticationService.UpdateUserAddressAsync(addressDto, userEmail);
             return Ok(addressResult);
         }
+        [Authorize]
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<UserResultDto>> RefreshToken([FromBody] TokenRequestDto tokenRequest)
+        => Ok(await _serviceManager.AuthenticationService.RefreshTokenAsync(tokenRequest));
 
-
-
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        {
+            await _serviceManager.AuthenticationService.ConfirmEmail(email, token);
+            return Ok();
+        }
     }
 }

@@ -10,5 +10,8 @@ namespace Persistence.Identity
             base.OnModelCreating(builder);
             builder.Entity<Address>().ToTable("Addresses");
         }
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     }
 }

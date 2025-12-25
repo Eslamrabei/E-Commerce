@@ -1,0 +1,12 @@
+﻿namespace Domain.Entities.IdentityModule
+{
+    public class RefreshToken
+    {
+        public Guid Id { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public DateTimeOffset ExpiresAt { get; set; }
+        public bool IsRevoked { get; set; } = false;
+        public string UserId { get; set; }
+        public User User { get; set; }
+    }
+}
