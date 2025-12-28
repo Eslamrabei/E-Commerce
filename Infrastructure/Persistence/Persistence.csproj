@@ -11,7 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
+    <PackageReference Include="Qdrant.Client" Version="1.16.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.9.32" />
   </ItemGroup>
 

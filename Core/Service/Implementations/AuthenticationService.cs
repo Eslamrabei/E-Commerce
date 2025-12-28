@@ -16,7 +16,7 @@ namespace Service.Implementations
 
         public async Task<UserResultDto> GetCurrentUSerAsync(string userEmail)
         {
-            var user = await _userManager.FindByEmailAsync(userEmail) ?? throw new GenericNotFoundException<Domain.Entities.IdentityModule.User, int>(userEmail);
+            var user = await _userManager.FindByEmailAsync(userEmail) ?? throw new GenericNotFoundException<User, int>(userEmail, "userEmail");
 
             return new UserResultDto(user.DisplayName, AccessToken: await GenerateAccessToken(user), RefreshToken: GenerateRefreshToken(), userEmail);
         }
@@ -24,14 +24,14 @@ namespace Service.Implementations
         public async Task<AddressDto> GetUserAddressAsync(string userEmail)
         {
             var user = await _userManager.Users.Include(add => add.Address).FirstOrDefaultAsync(user => user.Email == userEmail)
-                ?? throw new GenericNotFoundException<Domain.Entities.IdentityModule.User, int>(userEmail);
+                ?? throw new GenericNotFoundException<Domain.Entities.IdentityModule.User, int>(userEmail, "userEmail");
             return _mapper.Map<AddressDto>(user.Address);
         }
 
         public async Task<AddressDto> UpdateUserAddressAsync(AddressDto addressDto, string useremail)
         {
             var user = await _userManager.Users.Include(add => add.Address).FirstOrDefaultAsync(user => user.Email == useremail)
-               ?? throw new GenericNotFoundException<Domain.Entities.IdentityModule.User, int>(useremail);
+               ?? throw new GenericNotFoundException<Domain.Entities.IdentityModule.User, int>(useremail, "userEmail");
 
 
             if (user.Address != null)
@@ -108,7 +108,7 @@ namespace Service.Implementations
                 throw new UnauthorizeException("Invalide Token");
 
             var user = await _userManager.FindByEmailAsync(refreshToken.User.Email)
-                ?? throw new GenericNotFoundException<User, Guid>(refreshToken.User);
+                ?? throw new GenericNotFoundException<User, Guid>(refreshToken.User, "refreshToken");
 
             await _refreshTokenServices.RevokeAsync(refreshToken);
 
@@ -173,7 +173,7 @@ namespace Service.Implementations
         public async Task ConfirmEmail(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email)
-                ?? throw new GenericNotFoundException<User, Guid>(email);
+                ?? throw new GenericNotFoundException<User, Guid>(email, "email");
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
             var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
             if (!result.Succeeded)

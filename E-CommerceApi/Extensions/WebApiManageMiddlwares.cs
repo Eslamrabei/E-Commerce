@@ -20,5 +20,13 @@
             return app;
         }
 
+        //public static async Task<IApplicationBuilder> InitializeVectorDbAsync(this WebApplication app)
+        //{
+        //    using var scope = app.Services.CreateScope();
+        //    var vectorService = scope.ServiceProvider.GetRequiredService<IVectorService>();
+        //    await vectorService.InitializeAsync();
+        //    return app;
+        //}
+
     }
 }
