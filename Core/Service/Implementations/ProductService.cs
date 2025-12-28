@@ -1,6 +1,11 @@
-﻿namespace Service.Implementations
+﻿using FluentValidation;
+using Shared.Dtos.AiSearch;
+
+namespace Service.Implementations
 {
-    public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper) : IProductService
+    public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper, IProductRepository _productRepository,
+        IValidator<UpdateProductDto> _validator)
+        : IProductService
     {
         public async Task<IEnumerable<BrandResultDto>> GetAllBrandsAsync()
         {
@@ -36,6 +41,41 @@
             return _mapper.Map<IEnumerable<TypeResultDto>>(Types);
         }
 
+        public async Task<int> AddProduct(CreatedProductDto dto)
+        {
+            var entity = _mapper.Map<Product>(dto);
+            await _productRepository.AddAsync(entity);
+            await _unitOfWork.SaveChangeAsync();
 
+            var ProductId = entity.Id;
+            return ProductId;
+        }
+
+        public async Task<bool> DeleteProduct(int id)
+        {
+            var entity = await _productRepository.GetByIdAsync(id)
+                ?? throw new GenericNotFoundException<Product, int>(id, "productId");
+            _productRepository.Delete(entity);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+
+        }
+
+        public async Task UpdateProduct(UpdateProductDto dto)
+        {
+            var result = await _validator.ValidateAsync(dto);
+            if (!result.IsValid)
+                throw new Exception("Invalid Validation");
+
+            var OldEntity = await _productRepository.GetByIdAsync(dto.Id)
+                ?? throw new GenericNotFoundException<Product, int>(dto.Id, "productId");
+
+            OldEntity.Name = dto.Name;
+            OldEntity.Description = dto.Description;
+            OldEntity.Price = dto.Price;
+            OldEntity.PictureUrl = dto.PictureUrl;
+
+            await _unitOfWork.SaveChangeAsync();
+
+        }
     }
 }

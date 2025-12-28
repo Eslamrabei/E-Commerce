@@ -1,4 +1,6 @@
-﻿namespace E_CommerceApi.Extensions
+﻿using Persistence.Implementations;
+
+namespace E_CommerceApi.Extensions
 {
     public static class InfrastructureServicesExtensions
     {
@@ -18,6 +20,8 @@
             });
 
 
+
+
             // StoreDbContext
             services.AddScoped<IDataSeeding, DataSeeding>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -34,12 +38,18 @@
                 return ConnectionMultiplexer.Connect(_configuration.GetConnectionString("RedisConnection")!);
             });
 
+            services.AddHttpClient<IEmbeddingService, OllamaEmbeddingService>();
+            services.AddHttpClient<IOllamaService, OllamaService>();
+            services.AddHttpClient<IGroqService, GroqService>();
+            services.AddSingleton<IVectorService, VectorDbService>();
             services.AddScoped<JwtOptions>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<ICacheRepository, CacheRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.Configure<JwtOptions>(_configuration.GetSection("JwtOptions"));
             services.ValidateJwt(_configuration);
+
 
             return services;
         }
